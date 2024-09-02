@@ -1,7 +1,8 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreatePostDto } from './posts.dto';
+import { CreatePostDto, UpdatePostDto } from './posts.dto';
+import dayjs from 'dayjs';
 
 @Injectable()
 export class PostsRepository {
@@ -9,7 +10,10 @@ export class PostsRepository {
 
   async findPosts() {
     try {
-      return await this.prismaService.post.findMany({ select: { id: true, title: true, content: true, tags: true } });
+      return await this.prismaService.post.findMany({
+        where: { deletedAt: null },
+        select: { id: true, title: true, content: true, tags: true },
+      });
     } catch (e) {
       console.error(e);
 
@@ -22,6 +26,46 @@ export class PostsRepository {
       return await this.prismaService.post.create({
         data: { title, content, tags },
         select: { id: true, title: true, content: true, tags: true },
+      });
+    } catch (e) {
+      console.error(e);
+
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async findPost(postId: number) {
+    try {
+      return await this.prismaService.post.findUnique({
+        where: { id: postId, deletedAt: null },
+        select: { id: true, title: true, content: true, tags: true },
+      });
+    } catch (e) {
+      console.error(e);
+
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async updatePost(postId: number, { title, content, tags }: UpdatePostDto) {
+    try {
+      return await this.prismaService.post.update({
+        where: { id: postId },
+        data: { title, content, tags },
+        select: { id: true, title: true, content: true, tags: true },
+      });
+    } catch (e) {
+      console.error(e);
+
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async deletePost(postId: number) {
+    try {
+      return await this.prismaService.post.update({
+        where: { id: postId },
+        data: { deletedAt: dayjs().toISOString() },
       });
     } catch (e) {
       console.error(e);

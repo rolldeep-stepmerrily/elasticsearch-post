@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { PostsRepository } from './posts.repository';
-import { CreatePostDto } from './posts.dto';
+import { CreatePostDto, UpdatePostDto } from './posts.dto';
 import { SearchService } from 'src/search/search.service';
 
 @Injectable()
@@ -19,7 +19,29 @@ export class PostsService {
     const post = await this.postsRepository.createPost(createPostDto);
 
     await this.searchService.indexPost(post);
+  }
 
-    return post;
+  async findPost(postId: number) {
+    const post = await this.postsRepository.findPost(postId);
+
+    if (!post) {
+      throw new NotFoundException();
+    }
+  }
+
+  async updatePost(postId: number, updatePostDto: UpdatePostDto) {
+    await this.postsRepository.findPost(postId);
+
+    const post = await this.postsRepository.updatePost(postId, updatePostDto);
+
+    await this.searchService.updatePost(post);
+  }
+
+  async deletePost(postId: number) {
+    await this.postsRepository.findPost(postId);
+
+    await this.postsRepository.deletePost(postId);
+
+    await this.searchService.deletePost(postId);
   }
 }
