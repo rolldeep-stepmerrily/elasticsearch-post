@@ -18,6 +18,6 @@ export class PostsController {
   @ApiOperation({ summary: '포스트 작성' })
   @Post()
   async createPost(@Body() createPostDto: CreatePostDto) {
-    return await this.postsService.createPost(createPostDto);
+    await this.postsService.createPost(createPostDto);
   }
 }
