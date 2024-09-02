@@ -8,5 +8,7 @@ declare namespace NodeJS {
     ADMIN_PASSWORD: string;
     GUEST_NAME: string;
     GUEST_PASSWORD: string;
+    ELASTICSEARCH_NODE: string;
+    ELASTICSEARCH_API_KEY: string;
   }
 }

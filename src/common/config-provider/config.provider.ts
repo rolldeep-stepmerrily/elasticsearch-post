@@ -19,3 +19,5 @@ export const ADMIN_NAME_PROVIDER = createConfigProvider<string>('ADMIN_NAME');
 export const ADMIN_PASSWORD_PROVIDER = createConfigProvider<string>('ADMIN_PASSWORD');
 export const GUEST_NAME_PROVIDER = createConfigProvider<string>('GUEST_NAME');
 export const GUEST_PASSWORD_PROVIDER = createConfigProvider<string>('GUEST_PASSWORD');
+export const ELASTICSEARCH_NODE_PROVIDER = createConfigProvider<string>('ELASTICSEARCH_NODE');
+export const ELASTICSEARCH_API_KEY_PROVIDER = createConfigProvider<string>('ELASTICSEARCH_API_KEY');

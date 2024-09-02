@@ -6,6 +6,8 @@ import { PrismaModule } from './prisma/prisma.module';
 import { HttpLoggerMiddleware } from './common/middlewares';
 import { AppController } from './app.controller';
 import { ConfigProviderModule } from './common/config-provider';
+import { PostsModule } from './posts/posts.module';
+import { SearchModule } from './search/search.module';
 
 @Module({
   imports: [
@@ -19,6 +21,8 @@ import { ConfigProviderModule } from './common/config-provider';
         ADMIN_PASSWORD: Joi.string().required(),
         GUEST_NAME: Joi.string().required(),
         GUEST_PASSWORD: Joi.string().required(),
+        ELASTICSEARCH_NODE: Joi.string().required(),
+        ELASTICSEARCH_API_KEY: Joi.string().required(),
       }),
       isGlobal: true,
       envFilePath: '.env',
@@ -26,6 +30,8 @@ import { ConfigProviderModule } from './common/config-provider';
     }),
     PrismaModule,
     ConfigProviderModule,
+    PostsModule,
+    SearchModule,
   ],
   controllers: [AppController],
 })
